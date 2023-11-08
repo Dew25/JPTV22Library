@@ -56,8 +56,10 @@ public class App {
             System.out.println("5. Give the book to the reader");
             System.out.println("6. Return book");
             System.out.println("7. Print list readed books");
+            System.out.println("8. Ranking of books being read");
+            System.out.println("9. Most Reading Reader");
             System.out.print("Enter number task: ");
-            int task = InputFromKeyboard.inputNumberFromRange(0,7);
+            int task = InputFromKeyboard.inputNumberFromRange(0,9);
             switch (task) {
                 case 0:
                     repeat = false;
@@ -88,6 +90,12 @@ public class App {
                     break;
                 case 7:
                     historyManager.printListReadingBooks(histories);
+                    break;
+                case 8:
+                    System.out.println("Implementation expected");
+                    break;
+                case 9:
+                    System.out.println("Implementation expected");
                     break;
                 default:
                     System.out.println("Select number from list tasks!");
