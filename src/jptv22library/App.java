@@ -24,7 +24,6 @@ import tools.InputFromKeyboard;
  */
 public class App {
     private final Scanner scanner;
-    //private Book[] books;
     private List<Book> books;
     private List<Reader> readers;
     private List<History> histories;
@@ -36,7 +35,6 @@ public class App {
     public App() {
         this.scanner = new Scanner(System.in);
         this.saveManager = new SaveManager();
-        //this.books = saveManager.loadBooks();//инициализация поля books и сюда считаем инфу из файла
         this.books = saveManager.loadBooks();
         this.readers = saveManager.loadReaders();
         this.histories = saveManager.loadHistories();
@@ -44,10 +42,7 @@ public class App {
         this.readerManager = new ReaderManager(scanner);
         this.historyManager = new HistoryManager(scanner);
     }
-    
-    
-    
-    
+
     void run() {
         boolean repeat = true;
         System.out.println("------ Library ------");
@@ -100,23 +95,5 @@ public class App {
         }while(repeat);
     }
 
-//    private void addBookToBooks(Book book) {
-//        this.books = Arrays.copyOf(this.books, this.books.length + 1);
-//        this.books[this.books.length - 1] = book;
-//        saveManager.saveBooks(this.books);//save to file
-//    }
-
-//    private void addReaderToReaders(Reader reader) {
-//        this.readers = Arrays.copyOf(this.readers, this.readers.length + 1);
-//        this.readers[this.readers.length - 1] = reader;
-//        saveManager.saveReaders(readers);
-//    }
-//    private void addHistoryToHistories(History history) {
-//        this.histories = Arrays.copyOf(this.histories, this.histories.length + 1);
-//        this.histories[this.histories.length - 1] = history;
-//        saveManager.saveHistories(histories);
-//    }
-
-    
     
 }

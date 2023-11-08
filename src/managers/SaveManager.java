@@ -23,11 +23,14 @@ import java.util.List;
  * @author Melnikov
  */
 public class SaveManager {
+    private final String BOOK_FILENAME = "books";
+    private final String READER_FILENAME = "readers";
+    private final String HISTORIES_FILENAME = "histories";
     public void saveBooks(List<Book> books){
         FileOutputStream fos;
         ObjectOutputStream oos;
         try {
-            fos = new FileOutputStream("books");
+            fos = new FileOutputStream(BOOK_FILENAME);
             oos = new ObjectOutputStream(fos);
             oos.writeObject(books);
             oos.flush();
@@ -43,7 +46,7 @@ public class SaveManager {
         FileInputStream fis;
         ObjectInputStream ois;
         try {
-            fis = new FileInputStream("books");
+            fis = new FileInputStream(BOOK_FILENAME);
             ois = new ObjectInputStream(fis);
             books = (List<Book>) ois.readObject();
         } catch (FileNotFoundException ex) {
@@ -59,7 +62,7 @@ public class SaveManager {
         FileOutputStream fos;
         ObjectOutputStream oos;
         try {
-            fos = new FileOutputStream("readers");
+            fos = new FileOutputStream(READER_FILENAME);
             oos = new ObjectOutputStream(fos);
             oos.writeObject(readers);
             oos.flush();
@@ -75,7 +78,7 @@ public class SaveManager {
         FileInputStream fis;
         ObjectInputStream ois;
         try {
-            fis = new FileInputStream("readers");
+            fis = new FileInputStream(READER_FILENAME);
             ois = new ObjectInputStream(fis);
             readers = (List<Reader>) ois.readObject();
         } catch (FileNotFoundException ex) {
@@ -91,7 +94,7 @@ public class SaveManager {
         FileOutputStream fos;
         ObjectOutputStream oos;
         try {
-            fos = new FileOutputStream("histories");
+            fos = new FileOutputStream(HISTORIES_FILENAME);
             oos = new ObjectOutputStream(fos);
             oos.writeObject(histories);
             oos.flush();
@@ -107,7 +110,7 @@ public class SaveManager {
         FileInputStream fis;
         ObjectInputStream ois;
         try {
-            fis = new FileInputStream("histories");
+            fis = new FileInputStream(HISTORIES_FILENAME);
             ois = new ObjectInputStream(fis);
             histories = (List<History>) ois.readObject();
         } catch (FileNotFoundException ex) {

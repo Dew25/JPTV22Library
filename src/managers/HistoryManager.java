@@ -29,18 +29,23 @@ public class HistoryManager {
         this.bookManager = new BookManager(scanner);
         
     }
-
-    public History giveBookToReader(List<Reader> readers, List<Book> books) {
-        System.out.println("------------- Give the book to the reader ----------------");
-        History history = new History();
-        /*
+        /**
+         * Логика выдачи книги читателю
          * 1. Выводим нумерованный список читателей
          * 2. Просим ввести номер читателя
          * 3. получим по индексу читателя из массива читателей
          * 4. Инициируем поле в history.setReader(reader)
          * 5-9. Повторить действия 1-4 с книгой
-         * 10. Инициируем дату выдачи книги тукущим временем
+         * Если количество книг в наличии больше чем количество экземпляров этой книги
+         * 10. Инициируем дату выдачи книги текущим временем
+         * 11. Уменьшаем количество книг в наличии на 1
+         * 12. Возвращаем новую History
+         * Иначе возвращаем null
          */
+    public History giveBookToReader(List<Reader> readers, List<Book> books) {
+        System.out.println("------------- Give the book to the reader ----------------");
+        History history = new History();
+        
         int countReadersInList = readerManager.pirntListReaders(readers);
         System.out.print("Enter number reader: ");
         int readerNumber = InputFromKeyboard.inputNumberFromRange(1, countReadersInList);
@@ -53,17 +58,27 @@ public class HistoryManager {
             history.setBook(books.get(bookNumber-1));
             books.get(bookNumber-1).setCount(books.get(bookNumber-1).getCount()-1);
             history.setGiveBookToReaderDate(new GregorianCalendar().getTime());
+            return history;
         }else{
             System.out.println("All books are read");
             return null;
         }
-        return history;
     }
-
+    /**
+     * Логика возврата книги в библиотеку
+     * 1. Выводим из histories список книг, у которых поле returnBook == null
+     * 2. Выбираем номер истории для возврата книги
+     * 3. Если count книги меньше quantity книги, то
+     * 4. Добавляем к count книги 1
+     * 5. Инициируем поле returnBook текущей датой
+     * 6. Выводим запись о совершенном действии
+     * 7. Иначе 4-6 пропускаем и выводим сообщение, что все экземпляры уже в библиотеке
+     * @param histories список выданых и возвращенных книг 
+     */
     public void returnBook(List<History> histories) {
         System.out.println("-------- Return book to library ---------");
-        int countBooksInList;
-        if((countBooksInList = this.printListReadingBooks(histories))<1){
+        
+        if((this.printListReadingBooks(histories))<1){
             System.out.println("Not books");
             return;
         }
