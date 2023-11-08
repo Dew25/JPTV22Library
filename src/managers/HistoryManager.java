@@ -30,7 +30,7 @@ public class HistoryManager {
         
     }
 
-    public History giveBookToReader(Reader[] readers, List<Book> books) {
+    public History giveBookToReader(List<Reader> readers, List<Book> books) {
         System.out.println("------------- Give the book to the reader ----------------");
         History history = new History();
         /*
@@ -44,7 +44,7 @@ public class HistoryManager {
         int countReadersInList = readerManager.pirntListReaders(readers);
         System.out.print("Enter number reader: ");
         int readerNumber = InputFromKeyboard.inputNumberFromRange(1, countReadersInList);
-        history.setReader(readers[readerNumber-1]);
+        history.setReader(readers.get(readerNumber-1));
 
         int countBooksInList = bookManager.pirntListBooks(books);
         System.out.print("Enter number book: ");
@@ -60,7 +60,7 @@ public class HistoryManager {
         return history;
     }
 
-    public void returnBook(History[] histories) {
+    public void returnBook(List<History> histories) {
         System.out.println("-------- Return book to library ---------");
         int countBooksInList;
         if((countBooksInList = this.printListReadingBooks(histories))<1){
@@ -69,25 +69,25 @@ public class HistoryManager {
         }
         System.out.print("Enter number book: ");
         int historyNumber = InputFromKeyboard.inputNumberFromRange(1, null);
-        if(histories[historyNumber-1].getBook().getCount() < histories[historyNumber-1].getBook().getQuantity()){
-            histories[historyNumber-1].setReturnBook(new GregorianCalendar().getTime());
-            histories[historyNumber-1].getBook().setCount(histories[historyNumber-1].getBook().getCount()+1);
-            System.out.printf("Book \"%s\" returned%n",histories[historyNumber-1].getBook().getTitle());
+        if(histories.get(historyNumber-1).getBook().getCount() < histories.get(historyNumber-1).getBook().getQuantity()){
+            histories.get(historyNumber-1).setReturnBook(new GregorianCalendar().getTime());
+            histories.get(historyNumber-1).getBook().setCount(histories.get(historyNumber-1).getBook().getCount()+1);
+            System.out.printf("Book \"%s\" returned%n",histories.get(historyNumber-1).getBook().getTitle());
         }else{
             System.out.println("All books are already in stock"); 
         }
     }
 
-    public  int printListReadingBooks(History[] histories) {
+    public  int printListReadingBooks(List<History> histories) {
         int countReadingBooks = 0;
         System.out.println("List reading books:");
-        for (int i = 0; i < histories.length; i++) {
-            if(histories[i].getReturnBook() == null){
+        for (int i = 0; i < histories.size(); i++) {
+            if(histories.get(i).getReturnBook() == null){
                 System.out.printf("%d. %s. reading %s %s%n",
                         i+1,
-                        histories[i].getBook().getTitle(),
-                        histories[i].getReader().getFirstname(),
-                        histories[i].getReader().getLastname()
+                        histories.get(i).getBook().getTitle(),
+                        histories.get(i).getReader().getFirstname(),
+                        histories.get(i).getReader().getLastname()
                 );
                 countReadingBooks++;
             }

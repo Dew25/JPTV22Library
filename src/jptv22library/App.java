@@ -26,8 +26,8 @@ public class App {
     private final Scanner scanner;
     //private Book[] books;
     private List<Book> books;
-    private Reader[] readers;
-    private History[] histories;
+    private List<Reader> readers;
+    private List<History> histories;
     private final BookManager bookManager;
     private final ReaderManager readerManager;
     private HistoryManager historyManager;
@@ -72,7 +72,8 @@ public class App {
                     saveManager.saveBooks(this.books);//save to file
                     break;
                 case 2:
-                    addReaderToReaders(readerManager.addReader());
+                    readers.add(readerManager.addReader());
+                    saveManager.saveReaders(readers);
                     break;
                 case 3:
                     bookManager.pirntListBooks(books);
@@ -83,7 +84,7 @@ public class App {
                 case 5:
                     History history = historyManager.giveBookToReader(readers, books);
                     if(history != null){
-                        addHistoryToHistories(history);
+                        this.histories.add(history);
                     }
                     break;
                 case 6:
@@ -105,16 +106,16 @@ public class App {
 //        saveManager.saveBooks(this.books);//save to file
 //    }
 
-    private void addReaderToReaders(Reader reader) {
-        this.readers = Arrays.copyOf(this.readers, this.readers.length + 1);
-        this.readers[this.readers.length - 1] = reader;
-        saveManager.saveReaders(readers);
-    }
-    private void addHistoryToHistories(History history) {
-        this.histories = Arrays.copyOf(this.histories, this.histories.length + 1);
-        this.histories[this.histories.length - 1] = history;
-        saveManager.saveHistories(histories);
-    }
+//    private void addReaderToReaders(Reader reader) {
+//        this.readers = Arrays.copyOf(this.readers, this.readers.length + 1);
+//        this.readers[this.readers.length - 1] = reader;
+//        saveManager.saveReaders(readers);
+//    }
+//    private void addHistoryToHistories(History history) {
+//        this.histories = Arrays.copyOf(this.histories, this.histories.length + 1);
+//        this.histories[this.histories.length - 1] = history;
+//        saveManager.saveHistories(histories);
+//    }
 
     
     
