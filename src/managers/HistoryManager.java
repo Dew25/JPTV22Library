@@ -9,8 +9,14 @@ import entity.Book;
 import entity.History;
 import entity.Reader;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import static java.util.Map.entry;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 import tools.InputFromKeyboard;
 
 /**
@@ -34,13 +40,13 @@ public class HistoryManager {
          * 1. Выводим нумерованный список читателей
          * 2. Просим ввести номер читателя
          * 3. получим по индексу читателя из массива читателей
-         * 4. Инициируем поле в history.setReader(reader)
+         * 4. �?нициируем поле в history.setReader(reader)
          * 5-9. Повторить действия 1-4 с книгой
          * Если количество книг в наличии больше чем количество экземпляров этой книги
-         * 10. Инициируем дату выдачи книги текущим временем
+         * 10. �?нициируем дату выдачи книги текущим временем
          * 11. Уменьшаем количество книг в наличии на 1
          * 12. Возвращаем новую History
-         * Иначе возвращаем null
+         * �?наче возвращаем null
          */
     public History giveBookToReader(List<Reader> readers, List<Book> books) {
         System.out.println("------------- Give the book to the reader ----------------");
@@ -70,9 +76,9 @@ public class HistoryManager {
      * 2. Выбираем номер истории для возврата книги
      * 3. Если count книги меньше quantity книги, то
      * 4. Добавляем к count книги 1
-     * 5. Инициируем поле returnBook текущей датой
+     * 5. �?нициируем поле returnBook текущей датой
      * 6. Выводим запись о совершенном действии
-     * 7. Иначе 4-6 пропускаем и выводим сообщение, что все экземпляры уже в библиотеке
+     * 7. �?наче 4-6 пропускаем и выводим сообщение, что все экземпляры уже в библиотеке
      * @param histories список выданых и возвращенных книг 
      */
     public void returnBook(List<History> histories) {
@@ -111,6 +117,48 @@ public class HistoryManager {
             System.out.println("\tNo books to read");
         }
         return countReadingBooks;
+    }
+    /**
+     * ������ ������ �������� �������� ����
+     * 1. � ����� ��������� ��� histories
+     * 
+     */
+    public void printRankingOfBooksBeingRead(List<History> histories) {
+        /* ��� ����, ����� ������� � ���������� ������ �������
+         * ���������� �������� � Book ����� hashCode � equals, � �������
+         * ��������������� ��������� ������, ��������� � count
+         * hash = 53 * hash + this.count;
+         * if (this.count != other.count) {
+         *   return false;
+         * }
+         */
+        Map<Book,Integer> mapBooks = new HashMap<>();
+        for (int i = 0; i < histories.size(); i++) {
+            Book book = histories.get(i).getBook();
+            if(mapBooks.containsKey(book)){
+                mapBooks.put(book,mapBooks.get(book) + 1);
+            }else{
+                mapBooks.put(book,1);
+            }
+        }
+        Map<Book, Integer> sortedMap = mapBooks.entrySet()
+            .stream()
+            .sorted(Map.Entry.<Book, Integer>comparingByValue().reversed())
+            .collect(Collectors.toMap(
+                Map.Entry::getKey, 
+                Map.Entry::getValue, 
+                (oldValue, newValue) -> oldValue, 
+                LinkedHashMap::new));
+        System.out.println("Ranking of books being read:");
+        int n=1;
+        for (Map.Entry entry : sortedMap.entrySet()) {
+            System.out.printf("%d. %s: %d%n",
+                    n,
+                    ((Book)entry.getKey()).getTitle(),
+                    entry.getValue()
+            );
+            n++;
+        }
     }
 
     

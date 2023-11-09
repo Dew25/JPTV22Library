@@ -94,11 +94,11 @@ public class Book implements Serializable{
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 61 * hash + Objects.hashCode(this.title);
-        hash = 61 * hash + this.publishedYear;
-        hash = 61 * hash + Arrays.deepHashCode(this.authors);
-        hash = 61 * hash + this.quantity;
-        hash = 61 * hash + this.count;
+        hash = 53 * hash + Objects.hashCode(this.title);
+        hash = 53 * hash + this.publishedYear;
+        hash = 53 * hash + Arrays.deepHashCode(this.authors);
+        hash = 53 * hash + this.quantity;
+        //hash = 53 * hash + this.count;
         return hash;
     }
 
@@ -120,17 +120,16 @@ public class Book implements Serializable{
         if (this.quantity != other.quantity) {
             return false;
         }
-        if (this.count != other.count) {
-            return false;
-        }
+//        if (this.count != other.count) {
+//            return false;
+//        }
         if (!Objects.equals(this.title, other.title)) {
             return false;
         }
-        if (!Arrays.deepEquals(this.authors, other.authors)) {
-            return false;
-        }
-        return true;
+        return Arrays.deepEquals(this.authors, other.authors);
     }
+
+    
     
     
 }

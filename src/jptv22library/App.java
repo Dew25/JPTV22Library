@@ -82,6 +82,7 @@ public class App {
                     History history = historyManager.giveBookToReader(readers, books);
                     if(history != null){
                         this.histories.add(history);
+                        saveManager.saveHistories(histories);
                     }
                     break;
                 case 6:
@@ -92,7 +93,8 @@ public class App {
                     historyManager.printListReadingBooks(histories);
                     break;
                 case 8:
-                    System.out.println("Implementation expected");
+                    //System.out.println("Implementation expected");
+                    historyManager.printRankingOfBooksBeingRead(this.histories);
                     break;
                 case 9:
                     System.out.println("Implementation expected");
@@ -100,6 +102,7 @@ public class App {
                 default:
                     System.out.println("Select number from list tasks!");
             }
+            System.out.println("-------------------------");
         }while(repeat);
     }
 
