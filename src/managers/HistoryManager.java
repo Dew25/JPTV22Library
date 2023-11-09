@@ -127,8 +127,13 @@ public class HistoryManager {
         /* Для того, чтобы выборка и сортировка прошла успешно
          * необходимо изменить у Book метод hashCode и equals, а имменно
          * закоментировать следующие строки, связанные с count
+         * hash = 53 * hash + this.quantity;
          * hash = 53 * hash + this.count;
-         * if (this.count != other.count) {
+         * 
+         * if (this.quantity != other.quantity) {
+         *   return false;
+         * }
+            if (this.count != other.count) {
          *   return false;
          * }
          */

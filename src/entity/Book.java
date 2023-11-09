@@ -97,7 +97,7 @@ public class Book implements Serializable{
         hash = 53 * hash + Objects.hashCode(this.title);
         hash = 53 * hash + this.publishedYear;
         hash = 53 * hash + Arrays.deepHashCode(this.authors);
-        hash = 53 * hash + this.quantity;
+        //hash = 53 * hash + this.quantity;
         //hash = 53 * hash + this.count;
         return hash;
     }
@@ -117,9 +117,9 @@ public class Book implements Serializable{
         if (this.publishedYear != other.publishedYear) {
             return false;
         }
-        if (this.quantity != other.quantity) {
-            return false;
-        }
+//        if (this.quantity != other.quantity) {
+//            return false;
+//        }
 //        if (this.count != other.count) {
 //            return false;
 //        }
