@@ -68,8 +68,7 @@ public class App {
                     repeat = false;
                     break;
                 case 1:
-                    books.add(bookManager.addBook());
-                    saveManager.saveBooks(this.books);//save to file
+                    bookManager.createBook();
                     break;
                 case 2:
                     readers.add(readerManager.addReader());
