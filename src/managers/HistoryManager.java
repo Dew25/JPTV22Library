@@ -8,6 +8,8 @@ package managers;
 import entity.Book;
 import entity.History;
 import entity.Reader;
+import facade.HistoryFacade;
+import facade.ReaderFacade;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Scanner;
@@ -22,83 +24,70 @@ public class HistoryManager {
     private final Scanner scanner;
     private final ReaderManager readerManager;
     private final BookManager bookManager;
+    private final HistoryFacade historyFacade;
+   
 
     public HistoryManager(Scanner scanner) {
         this.scanner = scanner;
         this.readerManager = new ReaderManager(scanner);
         this.bookManager = new BookManager(scanner);
+        this.historyFacade = new HistoryFacade();
         
     }
 
-    public History giveBookToReader(List<Reader> readers, List<Book> books) {
+    public void giveBookToReader() {
         System.out.println("------------- Give the book to the reader ----------------");
         History history = new History();
-        /*
-         * 1. Выводим нумерованный список читателей
-         * 2. Просим ввести номер читателя
-         * 3. получим по индексу читателя из массива читателей
-         * 4. Инициируем поле в history.setReader(reader)
-         * 5-9. Повторить действия 1-4 с книгой
-         * 10. Инициируем дату выдачи книги тукущим временем
-         */
-        int countReadersInList = readerManager.pirntListReaders(readers);
+        readerManager.pirntListReaders();
         System.out.print("Enter number reader: ");
-        int readerNumber = InputFromKeyboard.inputNumberFromRange(1, countReadersInList);
-        history.setReader(readers.get(readerNumber-1));
-
-        int countBooksInList = bookManager.pirntListBooks(books);
+        int readerNumber = InputFromKeyboard.inputNumberFromRange(1, null);
+        history.setReader(readerManager.getById(readerNumber));
+        bookManager.pirntListBooks();
         System.out.print("Enter number book: ");
-        int bookNumber = InputFromKeyboard.inputNumberFromRange(1, countBooksInList);
-        if(books.get(bookNumber-1).getCount() > 0){
-            history.setBook(books.get(bookNumber-1));
-            books.get(bookNumber-1).setCount(books.get(bookNumber-1).getCount()-1);
+        int bookId = InputFromKeyboard.inputNumberFromRange(1, null);
+        Book book = bookManager.getById(bookId);
+        if(book.getCount() > 0){
+            history.setBook(bookManager.getById(bookId));
+            book.setCount(book.getCount()-1);
+            bookManager.update(book);
             history.setGiveBookToReaderDate(new GregorianCalendar().getTime());
+            historyFacade.create(history);
         }else{
-            System.out.println("All books are read");
-            return null;
+            System.out.println("Все экземпляры книги на руках");
         }
-        return history;
     }
 
-    public void returnBook(List<History> histories) {
+    public void returnBook() {
         System.out.println("-------- Return book to library ---------");
-        int countBooksInList;
-        if((countBooksInList = this.printListReadingBooks(histories))<1){
-            System.out.println("Not books");
+        
+        if(this.printListReadingBooks()<1){
+            System.out.println("Список пуст");
             return;
         }
         System.out.print("Enter number book: ");
         int historyNumber = InputFromKeyboard.inputNumberFromRange(1, null);
-        if(histories.get(historyNumber-1).getBook().getCount() < histories.get(historyNumber-1).getBook().getQuantity()){
-            histories.get(historyNumber-1).setReturnBook(new GregorianCalendar().getTime());
-            histories.get(historyNumber-1).getBook().setCount(histories.get(historyNumber-1).getBook().getCount()+1);
-            System.out.printf("Book \"%s\" returned%n",histories.get(historyNumber-1).getBook().getTitle());
+        History history = historyFacade.find((long)historyNumber);
+        if(history.getBook().getCount() < history.getBook().getQuantity()){
+            history.setReturnBook(new GregorianCalendar().getTime());
+            history.getBook().setCount(history.getBook().getCount()+1);
+            System.out.printf("Книга \"%s\" возвращена%n",history.getBook().getTitle());
         }else{
-            System.out.println("All books are already in stock"); 
+            System.out.println("Все экземпляры книги в библотеке"); 
         }
     }
 
-    public  int printListReadingBooks(List<History> histories) {
-        int countReadingBooks = 0;
+    public int printListReadingBooks() {
+        List<History> historiesToReadigBooks = historyFacade.findHistoryToReadingBooks();
         System.out.println("List reading books:");
-        for (int i = 0; i < histories.size(); i++) {
-            if(histories.get(i).getReturnBook() == null){
-                System.out.printf("%d. %s. reading %s %s%n",
-                        i+1,
-                        histories.get(i).getBook().getTitle(),
-                        histories.get(i).getReader().getFirstname(),
-                        histories.get(i).getReader().getLastname()
-                );
-                countReadingBooks++;
-            }
+        for (int i = 0; i < historiesToReadigBooks.size(); i++) {
+            System.out.printf("%d. %s. reading %s %s%n",
+                    i+1,
+                    historiesToReadigBooks.get(i).getBook().getTitle(),
+                    historiesToReadigBooks.get(i).getReader().getFirstname(),
+                    historiesToReadigBooks.get(i).getReader().getLastname()
+            );
         }
-        if(countReadingBooks < 1){
-            System.out.println("\tNo books to read");
-        }
-        return countReadingBooks;
+        return historiesToReadigBooks.size();
     }
-
-    
-    
     
 }

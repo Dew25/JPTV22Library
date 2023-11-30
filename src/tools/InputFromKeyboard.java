@@ -1,5 +1,6 @@
 package tools;
 
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -59,6 +60,23 @@ public class InputFromKeyboard {
             }
             System.out.print("For continue press \"y\", exit press \"n\": ");
         }while(true);
+    }
+    public static int inputNumberFromRange(List<Integer> listId){
+        Scanner scanner = new Scanner(System.in);
+        int number = -1;
+        do{
+            try {
+                number = scanner.nextInt();
+                scanner.nextLine();
+                if(!listId.contains(number)){
+                    continue;
+                }
+                return number;
+            } catch (Exception e) {
+                scanner.nextLine();
+            }
+        }while(true);
+        
     }
     
     
